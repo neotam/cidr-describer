@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title> Describe CIDR | CIDR to IP Range Converter | Neo Util Tools</title>
+    <meta name="Description" content="Best tool to describe CIDR block that is to convert CIDR block to IP Range and identify special network and broadcast addresses">
+    {{#headstart}}
+        {{{ . }}}
+    {{/headstart}}
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap-reboot.css' crossorigin="anonymous">  -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="{{{ STATIC_URL }}}/{{{ STATIC_PATH }}}gdeps.css" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="{{{ STATIC_URL }}}/{{{ STATIC_PATH }}}fontawesome.min.css" crossorigin="anonymous"> -->
+    <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"> -->
+
+    <style>
+      .unit-select {
+        padding: .5em 0 .5em .5em;
+        height: 2em; 
+        box-sizing: content-box; 
+        font-size: 2em; 
+      }
+
+      .unit-input:focus {
+        font-weight: bold; 
+        outline: none; 
+      }
+
+      [placeholder]:empty::before {
+        content: attr(placeholder);
+        color: #555; 
+      }
+
+      [placeholder]:empty:focus::before {
+        content: "";
+      }
+
+      /* @media screen and (min-width: 576) {
+        .container {
+          
+        }
+      } */
+
+      @media screen and (min-width: 576px) and (max-width: 768px) {
+        .bit {
+          font-size: .6em !important; 
+          /* color: green !important;  */
+          padding: .2em;
+        }
+      }
+      
+      #ip_address:not(:placeholder-shown) {
+        background-color: #8ef58a; 
+      }
+
+      input::placeholder{
+        color: rgba(220, 215, 215, 0.87) !important;
+        font-weight: normal;
+      }
+
+      #prefix:not(:placeholder-shown){
+        text-shadow: 0px 1px 10px white; 
+        background-color: #9cdcde!important; 
+      }
+
+    </style>
+
+
+  </head>
+  <body>
+    {{#bodystart}}
+        {{{ . }}}
+    {{/bodystart}}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+          <a class="navbar-brand" href='#'>CIDR Describer</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded='false' aria-label='Toggle Navigation' > 
+            <span class='navbar-toggler-icon'></span>
+          </button>
+
+         <div class="collapse navbar-collapse justify-content-end" id="navbar-content">
+          
+          <div class='navbar-nav '>
+              <a class="nav-item nav-link text-white" href="/">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-item nav-link text-white" href="#">About </a>
+          </div>
+
+         </div>
+
+        </div>
+    </nav>
+    
+    <div class="container" style="">
+        <nav class="nav nav-tabs mb-2 mb-md-5 mt-1 justify-content-end">
+          <a class="nav-item nav-link" href="https://neot.am" target="_blank">Crafted By: <strong>neoam</strong></a>
+          <a class="nav-item nav-link ml-md-n1 ml-n2" href="https://github.com/neotam" target="_blank" style="margin-right: auto;"> <span class="d-none d-md-inline">Source: </span>&nbsp; <img width="16" src="{{{ STATIC_DOMAIN}}}/{{{ STATIC_MEDIA_PATH }}}/images/GitHub-Mark-64px.png"> </a>
+          <a class="nav-item nav-link active" href="#!">CIDR</a>
+          <!-- <a class="nav-item nav-link" href="about-cidr.html">About Network CIDR</a> -->
+        </nav>
+
+        <!-- TODO: Vaidations -->
+        <section class="form-row" id="cidrinput">
+            <div class="form-group col-9">
+              <input id="ip_address" class="form-control form-control-lg text-monospace" value="" placeholder="10.21.2.32">
+              <small class="text-muted">IP Address Ex: 10.21.2.0</small>
+            </div>
+            <div class="col-2">
+              <div class="d-flex flex-row">
+                <span class="" style="font-size:2em;">/ &nbsp;</span>
+                <div class="form-group ">
+                  <input id="prefix" class="form-control form-control-lg p-0 p-md-1 text-center font-weight-bold bg-info" type="number" min="0" max="32" value="" placeholder="24">
+                  <small class="text-muted ">Prefix <span class="d-none d-lg-inline">Length</span></small>
+                </div>
+              </div>
+
+            </div>
+        </section>
+
+           
+        <div id="ipBits" class="container"> </div>
+
+        <hr> 
+        <section id="cidroutput">
+
+          <div class="form-group form-row">
+            <label for="netmask" class="col-4">Network Mask <span class="text-muted d-none d-lg-inline"> - Dotted Decimal Notation</span></label>      
+            <input id="netmask" class="form-control col-8"readonly>
+          </div>
+
+          <div class="form-group form-row">
+            <label for="wildcardmask" class="col-4"> Wildcard Mask </span></label>      
+            <input id="wildcardmask" class="form-control col-8"readonly>
+          </div>
+
+          <div class="form-row mb-1">
+            <div class="form-group col-6">
+              <label for="firstip">First IP</label>      
+              <input id="firstip" class="form-control"readonly>
+              <small>is Network Address</small>
+            </div>
+            <div class="form-group col-6">
+              <label for="lastip">Last IP</label>      
+              <input id="lastip" class="form-control"readonly>
+              <small>is Broadcast Address</small>
+            </div>
+          </div>
+
+          <div class="form-row mb-3">
+            <div class="d-flex flex-row col-sm-5 border-bottom border-success">
+                <div class="mr-3"> # of Addresses</div>
+                <div id="ipCount"> 0 </div>
+            </div>
+            <div class="d-flex flex-row col-sm-5 border-bottom border-success offset-sm-2">
+              <div title="Number of IP Addresses that can be assigned to hosts" data-toggle="tooltip" class="mr-3"> Number of Hosts</div>
+              <div id="hostCount"> 0 </div>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend title="Range of IP Addresses that can be used by hosts" data-toggle="tooltip">Usable IP Address Range</legend>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label for="fromhostip">From:</label>      
+                <input id="fromhostip" class="form-control" title="Frist IP in the range that can be assigned to host" data-toggle="tooltip" readonly>
+              </div>
+              <div class="form-group col-6">
+                <label for="tohostip">To:</label>      
+                <input id="tohostip" class="form-control" title="Last IP in the range that can be assigned to host" data-toggle="tooltip" readonly>
+              </div>
+            </div>
+          </fieldset>
+
+        </section>
+
+        <!-- <button id="calculate" type="submit" class="d-block float-right btn btn-success">Calculate</button> -->
+    </div>
+
+    <article class="container mt-5">
+      <p> 
+      CIDR is a notation which stands for "classless inter domain routing". It is used to best describe the block of IP addresses. It provides the compact way to describe the block of IP addresses. 
+      With this notation both IP address and prefix length can be represented in such a that IP address followed by prefix length seperated with forward slash (/). Ex: 10.21.2.0/24 </p>
+      <p> Classes IP address is useless without it's network prefix or routing prefix in routing or network configuration.  
+        Routing prefix, that is the number after slash denotes the netmask or in other words number of left most bits in that IP address that defines the netid or network part. </p>
+    </article>
+
+    <script src="{{{ STATIC_URL }}}/{{{ STATIC_PATH }}}gdeps.js"></script>
+    <script src="network.js"></script>
+  </body>
+</html>
